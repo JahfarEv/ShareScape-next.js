@@ -2,6 +2,7 @@
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
+import MoreDropdrown from "./MoreDropdrown";
 
 const SideNav = () => {
   return (
@@ -10,7 +11,9 @@ const SideNav = () => {
         <Logo />
         <NavLinks/>
         {/*user & <ProfileLink/> */}
-        <div>{/* <MoreDropdown/> */}</div>
+        <div className="hidden md:flex relative md:mt-auto flex-1 items-end w-full">
+        <MoreDropdrown/>
+        </div>
       </div>
     </div>
   );

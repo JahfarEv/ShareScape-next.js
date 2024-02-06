@@ -3,41 +3,47 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { Activity, Bookmark, ChevronLeft, LogOut, Menu, Moon, Settings, Sun } from "lucide-react";
+import {
+  Activity,
+  Bookmark,
+  ChevronLeft,
+  LogOut,
+  Menu,
+  Moon,
+  Settings,
+  Sun,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 import { useTheme } from "next-themes";
 
-
 const MoreDropdrown = () => {
-  const [showModeToggle,setShowModeToggle] = useState(false)
+  const [showModeToggle, setShowModeToggle] = useState(false);
   const [open, setOpen] = useState(false);
-  const ref = useRef(null)
-  const {theme,setTheme} = useTheme()
-  useEffect(()=>{
-function handleOutsideClick(event){
-    if(!event.target) return;
-    if(ref.current&& !ref.current.contains(event.target)){
-        setOpen(false)
+  const ref = useRef(null);
+  const { theme, setTheme } = useTheme();
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (!event.target) return;
+      if (ref.current && !ref.current.contains(event.target)) {
+        setOpen(false);
+      }
     }
-}
 
-document.addEventListener("mousedown",handleOutsideClick);
-return ()=>{
-    document.removeEventListener("mousedown",handleOutsideClick)
-}
-  },[ref])
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [ref]);
   return (
     <DropdownMenu open={open}>
       <DropdownMenuTrigger asChild>
         <Button
-        onClick={()=>setOpen(!open)}
+          onClick={() => setOpen(!open)}
           variant={"ghost"}
           size={"lg"}
           className="md:w-full !justify-start space-x-2 !px-3"
@@ -46,10 +52,15 @@ return ()=>{
           <div className="hidden lg:block">More</div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent ref={ref}
-      className={cn("dark:bg-neutral-800 w-64 !rounded-xl !p-0 transition-opacity",!open && "opacity-0")}
-      align='end'
-      alignOffset={-40}>
+      <DropdownMenuContent
+        ref={ref}
+        className={cn(
+          "dark:bg-neutral-800 w-64 !rounded-xl !p-0 transition-opacity",
+          !open && "opacity-0"
+        )}
+        align="end"
+        alignOffset={-40}
+      >
         {!showModeToggle && (
           <>
             <DropdownMenuItem className="menuItem">

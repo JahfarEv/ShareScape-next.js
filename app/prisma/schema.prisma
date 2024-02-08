@@ -1,11 +1,12 @@
-generator client {
-    provider = "prisma-client-js"
-}
+
 
 datasource db {
     provider     = "mongodb"
     url          = env("DATABASE_URL")
    
+}
+generator client {
+    provider = "prisma-client-js"
 }
 
 model VerificationToken {
@@ -90,7 +91,6 @@ model Post {
     likes     Like[]
     savedBy   SavedPost[]
     comments  Comment[]
-    user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String      @map("user_id") @db.ObjectId
 
    
@@ -104,7 +104,6 @@ model SavedPost {
     postId    String   @db.ObjectId
     userId    String   @map("user_id") @db.ObjectId
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   
 }
@@ -117,7 +116,6 @@ model Like {
     postId    String   @db.ObjectId
     userId    String   @map("user_id") @db.ObjectId
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
    
 }
@@ -131,7 +129,6 @@ model Comment {
     postId    String   @db.ObjectId
     userId    String   @map("user_id") @db.ObjectId
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
    
 }

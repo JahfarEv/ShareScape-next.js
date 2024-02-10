@@ -1,11 +1,15 @@
-import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
+const { PrismaAdapter } = require("@auth/prisma-adapter");
+const prisma = require("@/lib/prisma");
+const GoogleProvider = require("next-auth/providers/google");
+const NextAuth = require("next-auth");
 
-const prisma = new PrismaClient()
+const { getServerSession } = require("next-auth");
+const { GetServerSidePropsContext, NextApiRequest, NextApiResponse } = require("next");
 
-export default NextAuth({
+const config = {
+  pages: {
+    signIn: "/login",
+  },
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -14,46 +18,58 @@ export default NextAuth({
     }),
   ],
   session: {
-    strategy:'jwt'
+    strategy: "jwt",
   },
   callbacks: {
-   async session({session,token}){
-      if(token){
+    async session({ session, token }) {
+      if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
+        session.user.email = token.email;
         session.user.image = token.picture;
         session.user.username = token.username;
       }
+
       return session;
     },
-     async jwt({token,user}){
-const prismaUser = await prisma.user.findFirst({
-  where:{
-    email:token.email
-  }
-})
-if(!prismaUser){
-  token.id = user.id
-  return token
-}
-if(!prismaUser.username){
-  await prisma.user.update({
-    where:{
-      id: prismaUser.id
-    },
-    data: {
-      username:prismaUser.name?.split(" ").join("").toLowerCase()
-    }
-  })
-}
-return {
-  id:prismaUser.id,
-  name:prismaUser.name,
-  email:prismaUser.email,
-  username:prismaUser.username,
-  picture:prismaUser.image
-}
-    }
+    async jwt({ token, user }) {
+      const prismaUser = await prisma.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
 
-  }
-})
+      if (!prismaUser) {
+        token.id = user.id;
+        return token;
+      }
+      if (!prismaUser.username) {
+        await prisma.user.update({
+          where: {
+            id: prismaUser.id,
+          },
+          data: {
+            username: prismaUser.name ? prismaUser.name.split(" ").join("").toLowerCase() : null,
+          },
+        });
+      }
+
+      return {
+        id: prismaUser.id,
+        name: prismaUser.name,
+        email: prismaUser.email,
+        username: prismaUser.username,
+        picture: prismaUser.image,
+      };
+    },
+  },
+};
+
+module.exports = NextAuth.default(config);
+
+// Use it in server contexts
+function auth(...args) {
+  return getServerSession(...args, config);
+}
+
+module.exports.auth = auth;

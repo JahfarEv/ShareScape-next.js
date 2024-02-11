@@ -85,6 +85,7 @@ const MoreDropdrown = () => {
             </DropdownMenuItem>
 
             <DropdownMenuItem className="menuItem" onClick={() => signOut()}>
+            
               <LogOut size={20} />
               <p>Log out</p>
             </DropdownMenuItem>

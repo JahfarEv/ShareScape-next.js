@@ -18,7 +18,7 @@ function Logo() {
       <p
         className={`font-semibold text-xl hidden lg:block`}
       >
-        Instagram
+        ShareScape
       </p>
     </Link>
   );

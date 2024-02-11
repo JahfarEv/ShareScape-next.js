@@ -13,6 +13,7 @@ import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { UserButton } from "@clerk/nextjs";
 
 const links = [
   { name: "Home", href: "/dashboard", icon: Home },
@@ -44,6 +45,11 @@ const links = [
     href: "/dashboard/create",
     icon: PlusSquare,
   },
+  {
+    name:"Profile",
+    href:"/dashboard",
+    icon:UserButton
+  }
 ];
 
 function NavLinks() {

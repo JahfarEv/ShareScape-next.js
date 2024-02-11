@@ -5,7 +5,7 @@ export default function page() {
   return (
     redirect('/dashbord')
     // <div className="h-screen">
-    //   <UserButton afterSignOutUrl="/"/>
+    //   <UserButton afterSignOutUrl="/dashboard"/>
     // </div>
 
   );

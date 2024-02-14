@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { createOrUpdateUser, deleteUser } from "@/lib/actions/user";
 
 export async function POST(req) {
-  // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
+ 
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
@@ -49,9 +49,15 @@ export async function POST(req) {
   }
 
   const eventType = evt?.type;
-  if (eventType === "user.created" || eventType === "user.updated") {
-    const { id, first_name, last_name, image_url, email_addresses, username } =
-      evt?.data;
+  if (eventType === 'user.created' || eventType === 'user.updated') {
+    const {
+      id,
+      first_name,
+      last_name,
+      image_url,
+      email_addresses,
+      username
+     } = evt?.data;
     try {
       await createOrUpdateUser(
         id,
@@ -71,7 +77,7 @@ export async function POST(req) {
       });
     }
   }
-  if (eventType === "user.deleted") {
+  if (eventType === 'user.deleted') {
     try {
       const { id } = evt?.data;
       await deleteUser(id);

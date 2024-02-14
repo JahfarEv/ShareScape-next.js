@@ -1,7 +1,6 @@
 import { Instagram  } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-// import { calSans } from "@/app/fonts";
 
 function Logo() {
   return (
